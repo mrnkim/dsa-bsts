@@ -54,6 +54,57 @@ class BinarySearchTree {
    * Returns the tree instance. Uses iteration. */
 
   insert(val) {
+    // if there is no root 
+      // make the new node with the val
+    if (!this.root) this.root = new Node(val);
+    
+    if (this.root) {
+      let current = this.root;
+
+      while(!new Node(val)) {
+
+        if (current.value > val) {
+          if (!current.left) {
+            current.left = new Node(val);
+          } else if (current.left && current.left > val) {
+            current = current.left 
+            current.left = new Node(val);
+          }
+        }
+
+        if (current.value < val) {
+          if (!current.right) {
+            current.right = new Node(val);
+          } else if (current.right && current.right < val) {
+            current = current.right 
+            current.right = new Node(val);
+          }
+        }
+      }
+
+      return this;
+    }
+    // while (we have a val)
+      // new val = 10 
+      // current = 50 (root)
+
+      // check the val of 50 > 10 
+        // if there is nothing to left of 50  
+          // make 10 to the left of 50
+      // else
+        // current reassigned to left side of current (left side of 50 => 25)
+        // compare 25 (cur) > 10 
+          // the 10 becomes the 25's left side
+
+      // check the val of 50 < 100 
+        // if there is nothing to right of 50  
+          // make 100 to the right of 50
+      // else
+        // current reassigned to right side of current (right side of 50 => 75)
+        // compare 75 (curr) < 100 
+          // the 100 becomes the 75's right side     
+        
+
 
   }
 
