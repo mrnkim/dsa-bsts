@@ -42,78 +42,76 @@ class BinarySearchTree {
    * Returns the tree instance. Uses iteration. */
 
   insert(val) {
-    let insert = false;
-    let current = this.root;
+    /*
+      - if there's no root node -> new node = root. return tree.
+      - if there's a root node
+        - compare root.val with val.
+          - if val > root.val -> move to root.right
+          - if val < root.val -> move to root.left
+            - if (!root.left) -> newNode = root.left
+            - if (root.left) compare root.left with val.
+              - if root.left.val > val -> move to root.left.left
+              - if root.left.val < val -> move to root.left.right
+                ...
+    */
+
+    const newNode = new Node(val);
 
     if (!this.root) {
-      this.root = new Node(val);
+      this.root = newNode;
       return this;
     }
 
-    while (!insert) {
-      if (current.left !== null && current.val > val) {
-        current = current.left;
-      }
+    let current = this.root;
 
-      if (current.right !== null && current.val < val) {
+    while (true) {
+      if (current.val > val) {
+        if (!current.left) {
+          current.left = newNode;
+          return this;
+        }
+        current = current.left;
+      } else {
+        if (!current.right) {
+          current.right = newNode;
+          return this;
+        }
         current = current.right;
       }
-
-      if (current.left === null && current.val > val) {
-        current.left = new Node(val);
-        insert = true;
-      }
-
-      if (current.right === null && current.val < val) {
-        current.right = new Node(val);
-        insert = true;
-      }
     }
-
-    return this;
   }
 
   /** insertRecursively(val): Insert a new node into the BST with value val.
    * Returns the tree instance. Uses recursion. */
 
   insertRecursively(val) {
-    let insert = false;
-    let current = this.root;
+    const newNode = new Node(val);
 
     if (!this.root) {
-      this.root = new Node(val);
+      this.root = newNode;
       return this;
     }
 
-    function _insert() {
-      if (insert) return;
-
-      if (current.left !== null && current.val > val) {
-        current = current.left;
-        _insert();
-      }
-
-      if (current.right !== null && current.val < val) {
-        current = current.right;
-        _insert();
-      }
-
-      if (current.left === null && current.val > val) {
-        current.left = new Node(val);
-        insert = true;
-        _insert();
-      }
-
-      if (current.right === null && current.val < val) {
-        current.right = new Node(val);
-        insert = true;
-        _insert();
+    function _insert(current) {
+      if (current.val > val) {
+        if (!current.left) {
+          current.left = newNode;
+          return this;
+        }
+        _insert(current.left);
+      } else {
+        if (!current.right) {
+          current.right = newNode;
+          return this;
+        }
+        _insert(current.right);
       }
     }
 
-    _insert();
+    _insert(this.root);
     return this;
   }
+
 
   /** find(val): Search the BST for a node
    * with value val.
@@ -145,11 +143,11 @@ class BinarySearchTree {
       }
 
       if (current.left !== null && current.left.val !== val) {
-        current = current.left
+        current = current.left;
       }
 
       if (current.right !== null && current.right.val !== val) {
-        current = current.right
+        current = current.right;
       }
 
       if (current.left === null || current.right === null) {
@@ -201,3 +199,26 @@ module.exports = {
   BinarySearchTree,
   Node,
 };
+
+let largeBST;
+
+  const n10 = new Node(10);
+  const n15 = new Node(15);
+  const n25 = new Node(25);
+  const n40 = new Node(40);
+  const n50 = new Node(50);
+  const n75 = new Node(75);
+  const n100 = new Node(100);
+
+  n50.left = n25;
+  n50.right = n75;
+
+  n25.left = n10;
+  n25.right = n40;
+
+  n75.right = n100;
+
+  n10.right = n15;
+
+  largeBST = new BinarySearchTree(n50);
+  largeBST.insertRecursively(9)
